@@ -6,6 +6,23 @@ I've been using [Nginx Proxy Manager](https://nginxproxymanager.com/) and [NPMPl
 But handling the whitelisting of IP addresses is a bit of a pain, so I wrote this. It's a bunch of Go, probably a little
 over-engineered, but it works.
 
+## Developing
+
+I am using [templ](https://templ.guide/) to manage Go templates. Install it with:
+
+```shell
+go get -tool github.com/a-h/templ/cmd/templ@latest
+```
+
+Then run `go tool templ generate` to generate the templates.
+
+### Running tests
+
+```shell
+go test -cover -coverprofile=coverage.out -parallel 10 ./...
+go tool cover -html=coverage.out
+```
+
 ## Building
 
 ```shell

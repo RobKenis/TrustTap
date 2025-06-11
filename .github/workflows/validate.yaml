@@ -1,0 +1,27 @@
+---
+name: Validate
+
+on:
+  push:
+
+jobs:
+  lint-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: build/package/Dockerfile
+
+  lint-and-test-go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.24"
+          cache: false
+      - uses: golangci/golangci-lint-action@v4
+        with:
+          skip-cache: true
+      - run: go test -cover ./...

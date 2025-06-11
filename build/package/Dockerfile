@@ -1,4 +1,4 @@
-FROM golang:1.23.6 as builder
+FROM golang:1.24.4 as builder
 
 WORKDIR /build
 
@@ -7,6 +7,7 @@ COPY go.sum .
 RUN go mod download
 
 COPY cmd cmd
+COPY internal internal
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o server cmd/server.go
 
