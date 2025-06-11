@@ -23,7 +23,8 @@ jobs:
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
           # yamllint enable
       - name: Build Container Image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v6.18.0
+        id: build
         with:
           platforms: linux/amd64,linux/arm64
           push: false
@@ -31,3 +32,12 @@ jobs:
           context: ./
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ steps.build.outputs.digest }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
