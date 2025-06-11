@@ -1,5 +1,7 @@
 # :unlock: TrustTap
 
+[![Validate](https://github.com/RobKenis/TrustTap/actions/workflows/validate.yaml/badge.svg)](https://github.com/RobKenis/TrustTap/actions/workflows/validate.yaml)
+
 Send a link to your friend. When they tap it, you whitelist their IP address.
 
 I've been using [Nginx Proxy Manager](https://nginxproxymanager.com/) and [NPMPlus](https://github.com/ZoeyVid/NPMplus) for a bit, big fan of their Access List feature.

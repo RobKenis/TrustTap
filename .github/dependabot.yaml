@@ -2,7 +2,7 @@
 version: 2
 updates:
   - package-ecosystem: "docker"
-    directory: "/"
+    directory: "/build/package"
     schedule:
       interval: "weekly"
 
