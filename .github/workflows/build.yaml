@@ -1,0 +1,33 @@
+---
+name: Build
+
+on:
+  push:
+
+jobs:
+  build-docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: Extract metadata for Docker
+        id: meta
+        uses: docker/metadata-action@v4.1.1
+        with:
+          images: ghcr.io/robkenis/TrustTap/TrustTap
+          # yamllint disable rule:line-length
+          tags: |
+            type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
+          # yamllint enable
+      - name: Build Container Image
+        uses: docker/build-push-action@v3
+        with:
+          platforms: linux/amd64,linux/arm64
+          push: false
+          file: ./build/package/Dockerfile
+          context: ./
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}

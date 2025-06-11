@@ -1,6 +1,7 @@
 # :unlock: TrustTap
 
 [![Validate](https://github.com/RobKenis/TrustTap/actions/workflows/validate.yaml/badge.svg)](https://github.com/RobKenis/TrustTap/actions/workflows/validate.yaml)
+[![Build](https://github.com/RobKenis/TrustTap/actions/workflows/build.yaml/badge.svg)](https://github.com/RobKenis/TrustTap/actions/workflows/build.yaml)
 
 Send a link to your friend. When they tap it, you whitelist their IP address.
 
