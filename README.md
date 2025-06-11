@@ -18,6 +18,13 @@ go get -tool github.com/a-h/templ/cmd/templ@latest
 
 Then run `go tool templ generate` to generate the templates.
 
+### Linting
+
+```shell
+pre-commit install
+pre-commit run --all-files
+```
+
 ### Running tests
 
 ```shell
