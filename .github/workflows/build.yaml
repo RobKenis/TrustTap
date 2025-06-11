@@ -27,7 +27,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4.1.1
         with:
-          images: ghcr.io/robkenis/TrustTap/TrustTap
+          images: ghcr.io/robkenis/TrustTap
           # yamllint disable rule:line-length
           tags: |
             type=raw,value=latest,enable=${{ github.ref == format('refs/heads/{0}', 'main') }}
