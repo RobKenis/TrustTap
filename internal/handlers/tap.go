@@ -35,7 +35,6 @@ func (h *TapHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	request := model.NewAccessRequest(ip)
-	log.Debug().Str("ip", request.IpAddress).Msg("Incoming request")
 	err := h.storage.Store(request)
 	if err != nil {
 		log.Error().Err(err).Msg("Failed to store access request")
