@@ -8,6 +8,7 @@ RUN go mod download
 
 COPY cmd cmd
 COPY internal internal
+COPY web web
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o server cmd/server.go
 

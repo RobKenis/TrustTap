@@ -5,7 +5,6 @@ import (
 	"os"
 	"time"
 
-	"github.com/robkenis/TrustTap/internal/components"
 	"github.com/robkenis/TrustTap/internal/handlers"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -19,7 +18,7 @@ func main() {
 	r := http.NewServeMux()
 
 	r.Handle("GET /health", handlers.Health())
-	r.Handle("GET /", handlers.Component(components.Tap()))
+	r.Handle("GET /", http.FileServer(http.Dir("web")))
 	r.Handle("POST /tap", handlers.Tap())
 
 	srv := &http.Server{
