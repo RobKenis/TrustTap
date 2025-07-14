@@ -1,0 +1,13 @@
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  margin: 0;
+}
+
+.tap-btn {
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
