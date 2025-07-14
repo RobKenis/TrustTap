@@ -8,7 +8,7 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func Hello(name string) templ.Component {
+func Tap() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -29,20 +29,7 @@ func Hello(name string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div>Hello, ")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(name)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/components/hello.templ`, Line: 4, Col: 19}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "</div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"tap-bg\" style=\"min-height:100vh;display:flex;align-items:center;justify-content:center;background:#f3f4f6;\"><div style=\"display: flex; justify-content: center; margin-bottom: 1rem;\"><svg id=\"tap-lock\" class=\"tap-btn\" xmlns=\"http://www.w3.org/2000/svg\" width=\"96\" height=\"96\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"#2563eb\" style=\"cursor:pointer;\"><rect x=\"5\" y=\"11\" width=\"14\" height=\"8\" rx=\"2\" fill=\"#e5e7eb\" stroke=\"#2563eb\" stroke-width=\"2\"></rect> <path d=\"M8 11V8a4 4 0 1 1 8 0v3\" stroke=\"#2563eb\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" fill=\"none\"></path> <circle cx=\"12\" cy=\"15\" r=\"1.5\" fill=\"#2563eb\"></circle></svg></div></div><script>\n\t\tdocument.addEventListener('DOMContentLoaded', function () {\n\t\t\tconst lock = document.getElementById('tap-lock');\n\t\t\tlock.addEventListener('click', function () {\n\t\t\t\tfetch('/tap', {\n\t\t\t\t\tmethod: 'POST',\n\t\t\t\t}).then(res => console.log('Tap registered!'))\n\t\t\t\t\t.catch(() => console.error('Tap failed'));\n\t\t\t});\n\t\t});\n\t</script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

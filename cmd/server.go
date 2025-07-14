@@ -19,7 +19,8 @@ func main() {
 	r := http.NewServeMux()
 
 	r.Handle("GET /health", handlers.Health())
-	r.Handle("GET /", handlers.Component(components.Hello("Rob")))
+	r.Handle("GET /", handlers.Component(components.Tap()))
+	r.Handle("POST /tap", handlers.Tap())
 
 	srv := &http.Server{
 		Handler:      r,
