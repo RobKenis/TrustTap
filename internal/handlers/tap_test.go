@@ -5,6 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/robkenis/TrustTap/internal/storage"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -17,10 +18,16 @@ func TestTap(t *testing.T) {
 		req.Header.Set("X-Forwarded-For", "0.0.0.1")
 
 		rr := httptest.NewRecorder()
-		handler := Tap()
+		storage := storage.NewInMemoryStorage()
+		handler := NewTapHandler(storage)
 		handler.ServeHTTP(rr, req)
 
+		requests, _ := storage.All()
+
 		assert.Equal(t, http.StatusAccepted, rr.Code)
+		assert.Len(t, requests, 1, "Expected one request to be stored")
+
+		assert.Equal(t, "0.0.0.1", requests[0].IpAddress, "Expected IP to match")
 	})
 	t.Run("X-Real-IP header is used", func(t *testing.T) {
 		req, err := http.NewRequest("POST", "/tap", nil)
@@ -30,7 +37,7 @@ func TestTap(t *testing.T) {
 		req.Header.Set("X-Real-IP", "0.0.0.2")
 
 		rr := httptest.NewRecorder()
-		handler := Tap()
+		handler := NewTapHandler(storage.NewInMemoryStorage())
 		handler.ServeHTTP(rr, req)
 
 		assert.Equal(t, http.StatusAccepted, rr.Code)
@@ -43,7 +50,7 @@ func TestTap(t *testing.T) {
 		req.RemoteAddr = "0.0.0.3"
 
 		rr := httptest.NewRecorder()
-		handler := Tap()
+		handler := NewTapHandler(storage.NewInMemoryStorage())
 		handler.ServeHTTP(rr, req)
 
 		assert.Equal(t, http.StatusAccepted, rr.Code)
