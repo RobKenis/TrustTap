@@ -18,8 +18,13 @@ func main() {
 
 	r := http.NewServeMux()
 
+	webDirectory := os.Getenv("WEB_DIR")
+	if webDirectory == "" {
+		webDirectory = "web"
+	}
+
 	r.Handle("GET /health", handlers.Health())
-	r.Handle("GET /", http.FileServer(http.Dir("web")))
+	r.Handle("GET /", http.FileServer(http.Dir(webDirectory)))
 	r.Handle("POST /tap", handlers.NewTapHandler(storage.NewInMemoryStorage()))
 
 	srv := &http.Server{
