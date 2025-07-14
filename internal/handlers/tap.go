@@ -1,26 +1,53 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net"
 	"net/http"
 
+	"github.com/robkenis/TrustTap/internal/model"
+	"github.com/robkenis/TrustTap/internal/storage"
 	"github.com/rs/zerolog/log"
 )
 
-func Tap() http.Handler {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		ip := r.Header.Get("X-Forwarded-For")
-		if ip == "" {
-			ip = r.Header.Get("X-Real-IP")
-		}
-		if ip == "" {
-			ip, _ = extractHost(r.RemoteAddr)
-		}
+type TapHandler struct {
+	storage storage.RequestStorage
+}
 
-		log.Info().Str("ip", ip).Msg("Incoming request")
+func NewTapHandler(storage storage.RequestStorage) *TapHandler {
+	return &TapHandler{
+		storage: storage,
+	}
+}
 
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusAccepted)
+type tapResponse struct {
+	IpAddress string `json:"ip_address"`
+	Status    string `json:"status"`
+}
+
+func (h *TapHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	ip := r.Header.Get("X-Forwarded-For")
+	if ip == "" {
+		ip = r.Header.Get("X-Real-IP")
+	}
+	if ip == "" {
+		ip, _ = extractHost(r.RemoteAddr)
+	}
+
+	request := model.NewAccessRequest(ip)
+	log.Debug().Str("ip", request.IpAddress).Msg("Incoming request")
+	err := h.storage.Store(request)
+	if err != nil {
+		log.Error().Err(err).Msg("Failed to store access request")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusAccepted)
+	_ = json.NewEncoder(w).Encode(tapResponse{
+		IpAddress: request.IpAddress,
+		Status:    string(request.State),
 	})
 }
 

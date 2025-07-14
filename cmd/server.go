@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/robkenis/TrustTap/internal/handlers"
+	"github.com/robkenis/TrustTap/internal/storage"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
@@ -19,7 +20,7 @@ func main() {
 
 	r.Handle("GET /health", handlers.Health())
 	r.Handle("GET /", http.FileServer(http.Dir("web")))
-	r.Handle("POST /tap", handlers.Tap())
+	r.Handle("POST /tap", handlers.NewTapHandler(storage.NewInMemoryStorage()))
 
 	srv := &http.Server{
 		Handler:      r,
